@@ -79,10 +79,10 @@ if st.button("Generate schedule"):
     )
     st.markdown(
         """
-Suggested approach:
-1. Design your UML (draft).
-2. Create class stubs (no logic).
-3. Implement scheduling behavior.
-4. Connect your scheduler here and display results.
-"""
+        Suggested approach:
+        1. Design your UML (draft).
+        2. Create class stubs (no logic).
+        3. Implement scheduling behavior.
+        4. Connect your scheduler here and display results.
+        """
     )
