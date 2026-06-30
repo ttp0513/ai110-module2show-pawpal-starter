@@ -1,0 +1,105 @@
+classDiagram
+    class Owner {
+        +String ownerId
+        +String name
+        +String contactInfo
+        +TimeWindow[] dailyAvailability
+        +String[] preferences
+        addPet(pet)
+        setDailyAvailability(windows)
+    }
+
+    class Pet {
+        +String petId
+        +String name
+        +String species
+        +String breed
+        +Int ageMonths
+        +String[] specialNeeds
+        addTask(task)
+    }
+
+    class Task {
+        +String taskId
+        +String petId
+        +TaskType type
+        +String name
+        +Int durationMinutes
+        +Priority priority
+        +TimeWindow preferredWindow
+        +Boolean isFixedTime
+        +String frequency
+        +TaskStatus status
+    }
+
+    class TimeWindow {
+        +Time startTime
+        +Time endTime
+        overlaps(other) Boolean
+        contains(time) Boolean
+    }
+
+    class DailyPlan {
+        +Date planDate
+        +ScheduledSlot[] scheduledSlots
+        +UnscheduledTask[] unscheduledTasks
+        +Int totalPlannedMinutes
+        +String[] reasoningLog
+    }
+
+    class ScheduledSlot {
+        +String taskId
+        +Time startTime
+        +Time endTime
+        +String reason
+    }
+
+    class UnscheduledTask {
+        +String taskId
+        +String reason
+    }
+
+    class Scheduler {
+        generatePlan(pet[], task[], constraints) DailyPlan
+        -sortByPriorityAndFixedTime(tasks) Task[]
+        -allocateSlots(sortedTasks, availability) ScheduledSlot[]
+        -explainDecision(task, outcome) String
+    }
+
+    class TaskType {
+        <<enumeration>>
+        WALK
+        FEEDING
+        MEDICATION
+        ENRICHMENT
+        GROOMING
+        OTHER
+    }
+
+    class Priority {
+        <<enumeration>>
+        HIGH
+        MEDIUM
+        LOW
+    }
+
+    class TaskStatus {
+        <<enumeration>>
+        PENDING
+        SCHEDULED
+        COMPLETED
+        SKIPPED
+        MISSED
+    }
+
+    Owner "1" --> "*" Pet : owns
+    Pet "1" --> "*" Task : requires
+    Task --> TaskType
+    Task --> Priority
+    Task --> TaskStatus
+    Task --> TimeWindow : preferredWindow
+    Owner --> TimeWindow : dailyAvailability
+    Scheduler ..> DailyPlan : creates
+    Scheduler ..> Task : reads
+    DailyPlan "1" --> "*" ScheduledSlot
+    DailyPlan "1" --> "*" UnscheduledTask
