@@ -1,0 +1,17 @@
+flowchart LR
+    Owner([Pet Owner])
+    Sitter([Caregiver / Sitter])
+ 
+    Owner --> UC1[Manage Owner & Pet Profiles]
+    Owner --> UC2[Add / Edit Care Tasks]
+    Owner --> UC3[Set Constraints & Preferences]
+    Owner --> UC4[Generate Daily Plan]
+    Owner --> UC5[View Plan & Reasoning]
+    Owner --> UC6[Mark Task Complete / Missed]
+    Sitter --> UC5
+    Sitter --> UC6
+ 
+    UC4 --> Service[(PlannerService)]
+    Service --> Engine[(SchedulingEngine)]
+    Engine --> Checker[(ConstraintChecker)]
+    Engine --> Explainer[(PlanExplanation builder)]
